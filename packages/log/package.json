@@ -1,5 +1,5 @@
 {
-  "name": "@banbok/shared",
+  "name": "@banbok/log",
   "version": "0.0.1",
   "description": "Custom Logging Library for FE and BE in Banbok Project",
   "main": "dist/cjs/index.js",

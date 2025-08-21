@@ -14,21 +14,21 @@ A lightweight, customizable logging library for TypeScript/JavaScript applicatio
 ## Installation
 
 ```bash
-npm install @banbok/shared
+npm install @banbok/log
 ```
 
 ## Quick Start
 
 ```typescript
-import { Logger } from '@banbok/shared';
+import { Logger } from "@banbok/log";
 
 // Basic usage with default settings
 const logger = new Logger();
 
-logger.INFO('Application started');
-logger.ERROR('Database connection failed');
-logger.WARNING('Deprecated API usage');
-logger.DEBUG('Processing user data');
+logger.INFO("Application started");
+logger.ERROR("Database connection failed");
+logger.WARNING("Deprecated API usage");
+logger.DEBUG("Processing user data");
 ```
 
 ## Configuration
@@ -38,9 +38,9 @@ logger.DEBUG('Processing user data');
 ```typescript
 // Using options object
 const logger = new Logger({
-  timestamp: true,    // Show timestamps (default: true)
-  color: true,        // Show colors (default: true)
-  format: LogFormat.TEXT  // Output format (default: TEXT)
+  timestamp: true, // Show timestamps (default: true)
+  color: true, // Show colors (default: true)
+  format: LogFormat.TEXT, // Output format (default: TEXT)
 });
 
 // Using individual parameters
@@ -50,16 +50,24 @@ const logger = new Logger(true, true, LogFormat.JSON);
 ### Log Formats
 
 #### TEXT Format (Default)
+
 ```
 2024-01-20T10:30:45.123Z INFO [/path/to/file.ts:25:10]: Application started
 ```
 
 #### JSON Format
+
 ```json
-{"timestamp":"2024-01-20T10:30:45.123Z","level":"INFO","location":"/path/to/file.ts:25:10","message":"Application started"}
+{
+  "timestamp": "2024-01-20T10:30:45.123Z",
+  "level": "INFO",
+  "location": "/path/to/file.ts:25:10",
+  "message": "Application started"
+}
 ```
 
 #### SIMPLE Format
+
 ```
 2024-01-20T10:30:45.123Z INFO: Application started
 ```
@@ -67,56 +75,56 @@ const logger = new Logger(true, true, LogFormat.JSON);
 ### Available Options
 
 ```typescript
-import { LogFormat } from '@banbok/shared';
+import { LogFormat } from "@banbok/log";
 
 interface LoggerOptions {
-  timestamp?: boolean;  // Show/hide timestamps
-  color?: boolean;      // Enable/disable colors
-  format?: LogFormat;   // Output format
+  timestamp?: boolean; // Show/hide timestamps
+  color?: boolean; // Enable/disable colors
+  format?: LogFormat; // Output format
 }
 
 enum LogFormat {
   JSON = "json",
-  TEXT = "text", 
-  SIMPLE = "simple"
+  TEXT = "text",
+  SIMPLE = "simple",
 }
 ```
 
 ## Log Levels
 
-| Level | Color | Description |
-|-------|--------|-------------|
-| `INFO` | 🟢 Green | General information |
-| `ERROR` | 🔴 Red | Error conditions |
-| `WARNING` | 🟡 Yellow | Warning conditions |
-| `DEBUG` | 🔵 Blue | Debug information |
+| Level     | Color     | Description         |
+| --------- | --------- | ------------------- |
+| `INFO`    | 🟢 Green  | General information |
+| `ERROR`   | 🔴 Red    | Error conditions    |
+| `WARNING` | 🟡 Yellow | Warning conditions  |
+| `DEBUG`   | 🔵 Blue   | Debug information   |
 
 ## Examples
 
 ### Different Configurations
 
 ```typescript
-import { Logger, LogFormat } from '@banbok/shared';
+import { Logger, LogFormat } from "@banbok/log";
 
 // Production logger (JSON format, no colors)
 const prodLogger = new Logger({
   timestamp: true,
   color: false,
-  format: LogFormat.JSON
+  format: LogFormat.JSON,
 });
 
 // Development logger (colored text with timestamps)
 const devLogger = new Logger({
   timestamp: true,
   color: true,
-  format: LogFormat.TEXT
+  format: LogFormat.TEXT,
 });
 
 // Simple console logger
 const simpleLogger = new Logger({
   timestamp: false,
   color: true,
-  format: LogFormat.SIMPLE
+  format: LogFormat.SIMPLE,
 });
 ```
 
@@ -126,26 +134,25 @@ const simpleLogger = new Logger({
 const logger = new Logger();
 
 // Log objects
-logger.INFO('User data:', { id: 123, name: 'John' });
+logger.INFO("User data:", { id: 123, name: "John" });
 
 // Log arrays
-logger.DEBUG('Processing items:', [1, 2, 3, 4, 5]);
+logger.DEBUG("Processing items:", [1, 2, 3, 4, 5]);
 
 // Multiple arguments
-logger.ERROR('Failed to process:', error, 'for user:', userId);
+logger.ERROR("Failed to process:", error, "for user:", userId);
 ```
 
 ### Environment-Specific Usage
 
 ```typescript
-import { Logger, LogFormat } from '@banbok/shared';
+import { Logger, LogFormat } from "@banbok/log";
 
 const logger = new Logger({
   timestamp: true,
-  color: process.env.NODE_ENV !== 'production',
-  format: process.env.NODE_ENV === 'production' 
-    ? LogFormat.JSON 
-    : LogFormat.TEXT
+  color: process.env.NODE_ENV !== "production",
+  format:
+    process.env.NODE_ENV === "production" ? LogFormat.JSON : LogFormat.TEXT,
 });
 ```
 
@@ -154,12 +161,12 @@ const logger = new Logger({
 Fully typed with TypeScript support:
 
 ```typescript
-import { Logger, LoggerOptions, LogFormat } from '@banbok/shared';
+import { Logger, LoggerOptions, LogFormat } from "@banbok/log";
 
 const options: LoggerOptions = {
   timestamp: true,
   color: true,
-  format: LogFormat.JSON
+  format: LogFormat.JSON,
 };
 
 const logger = new Logger(options);
@@ -170,14 +177,16 @@ const logger = new Logger(options);
 ### Logger Class
 
 #### Constructor
+
 ```typescript
 constructor(options?: LoggerOptions)
 constructor(timestamp?: boolean, color?: boolean, format?: LogFormat)
 ```
 
 #### Methods
+
 - `INFO(...message: unknown[])` - Log info level message
-- `ERROR(...message: unknown[])` - Log error level message  
+- `ERROR(...message: unknown[])` - Log error level message
 - `WARNING(...message: unknown[])` - Log warning level message
 - `DEBUG(...message: unknown[])` - Log debug level message
 
@@ -193,14 +202,14 @@ interface LoggerOptions {
 enum LogFormat {
   JSON = "json",
   TEXT = "text",
-  SIMPLE = "simple"
+  SIMPLE = "simple",
 }
 
 enum LogLevel {
   INFO = "INFO",
-  ERROR = "ERROR", 
+  ERROR = "ERROR",
   WARNING = "WARNING",
-  DEBUG = "DEBUG"
+  DEBUG = "DEBUG",
 }
 ```
 
