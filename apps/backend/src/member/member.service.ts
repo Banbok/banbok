@@ -17,11 +17,15 @@ export class MemberService {
   }
 
   async findById(id: number) {
-    return this.database.select().from(member).where(eq(member.id, id));
+    return this.database.query.member.findFirst({
+      where: eq(member.id, id),
+    });
   }
 
   async findByEmail(email: string) {
-    return this.database.select().from(member).where(eq(member.email, email));
+    return this.database.query.member.findFirst({
+      where: eq(member.email, email),
+    });
   }
 
   async insert(req: typeof schema.member.$inferInsert) {
