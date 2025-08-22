@@ -34,7 +34,6 @@ export class ProblemService {
       );
     }
 
-
     await this.database.insert(problem).values({
       problemUrl: link,
       site: this.extractSite(link),
