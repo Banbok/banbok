@@ -15,7 +15,11 @@ export class ProblemService {
   ) {}
 
   async submit(memberId: number, link: string) {
-    const member = await this.memberService.findById(memberId);
+    const [member, submittedProblem] = await Promise.all([
+      this.memberService.findById(memberId),
+      this.isSubmitted(memberId, link),
+    ]);
+
     if (!member) {
       throw new HttpException(
         '존재하지 않는 멤버입니다.',
@@ -23,12 +27,13 @@ export class ProblemService {
       );
     }
 
-    if (this.isSubmitted(memberId, link)) {
+    if (submittedProblem) {
       throw new HttpException(
         '이미 제출된 문제입니다.',
         HttpStatus.BAD_REQUEST,
       );
     }
+
 
     await this.database.insert(problem).values({
       problemUrl: link,
