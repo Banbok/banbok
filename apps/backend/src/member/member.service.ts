@@ -16,6 +16,10 @@ export class MemberService {
     return this.database.select().from(member);
   }
 
+  async findById(id: number) {
+    return this.database.select().from(member).where(eq(member.id, id));
+  }
+
   async findByEmail(email: string) {
     return this.database.select().from(member).where(eq(member.email, email));
   }

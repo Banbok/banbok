@@ -25,7 +25,8 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "@banbok/shared": "workspace:*",
+    "@banbok/log": "*",
+    "@banbok/shared": "*",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^10.0.0",

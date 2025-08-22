@@ -20,10 +20,12 @@
 - **Node.js 성능 전문가**: Node.js의 이벤트 루프, 메모리 관리, 비동기 처리 등 근본 원리를 바탕으로 최적화 방안을 제시합니다.
 
 ## 언어 설정
+
 - 모든 코드 리뷰 및 피드백은 **한국어**로 제공해주세요.
 - 댓글과 설명은 한국어로 작성하며, 기술 용어는 적절히 영어와 함께 사용합니다.
 
 ## 프로젝트 개요
+
 - **모노레포 구조**: frontend (React + TypeScript), backend (NestJS + TypeScript) 포함
 - **Frontend**: React + TypeScript + Vite + React Router
 - **Backend**: NestJS + TypeScript + Drizzle ORM + MySQL/PostgreSQL
@@ -34,18 +36,21 @@
 ### Frontend (React + TypeScript)
 
 #### React 컴포넌트
+
 - **함수형 컴포넌트** 사용 (클래스형 컴포넌트 지양)
 - **React Hooks** 적극 활용 (useState, useEffect, useCallback 등)
 - 컴포넌트명은 **PascalCase** 사용
 - Props 인터페이스는 컴포넌트명 + `Props` 형태로 명명
 
 #### TypeScript
+
 - **strict 모드** 준수
 - 모든 함수와 변수에 적절한 타입 명시
 - `any` 타입 사용 지양, 구체적인 타입 정의 권장
 - 인터페이스는 **PascalCase**, 변수는 **camelCase** 사용
 
 #### CSS/스타일링
+
 - 각 페이지/컴포넌트별로 **별도 CSS 파일** 관리
 - 클래스명은 **kebab-case** 사용
 - 반응형 디자인을 위한 **미디어 쿼리** 적극 활용
@@ -54,36 +59,42 @@
 ### Backend (NestJS + TypeScript + Drizzle)
 
 #### NestJS 아키텍처
+
 - **MVC 패턴** 및 **레이어드 아키텍처** 준수
 - **Controller**, **Service**, **Repository** 계층 분리
 - **의존성 주입(DI)** 패턴 적극 활용
 - **모듈 기반** 구조로 관심사 분리
 
 #### TypeScript (Backend)
+
 - **strict 모드** 준수 및 강타입 활용
 - **데코레이터** 적절한 사용 (`@Controller`, `@Injectable`, `@Get` 등)
 - **DTO(Data Transfer Object)** 클래스로 API 스펙 명확화
 - **Generic 타입** 활용으로 재사용성 증대
 
 #### Drizzle ORM
+
 - **타입 안전한** 쿼리 작성
 - **스키마 정의**를 통한 데이터베이스 구조 관리
 - **마이그레이션** 파일로 데이터베이스 변경 이력 관리
 - 복잡한 쿼리는 **Raw SQL**보다 **쿼리 빌더** 우선 사용
 
 #### RESTful API 설계
+
 - **HTTP 메소드** 적절한 사용 (GET, POST, PUT, DELETE)
 - **리소스 중심** URL 설계 (`/users/:id`, `/posts/:id/comments`)
 - **응답 코드** 명확한 사용 (200, 201, 400, 404, 500 등)
 - **페이지네이션**, **필터링**, **정렬** 지원
 
 #### 데이터베이스 설계
+
 - **정규화/비정규화** 상황에 맞는 적절한 적용
 - **인덱스** 성능을 고려한 설계
 - **외래 키 제약조건** 데이터 무결성 보장
 - **JOIN 쿼리** 최적화 고려
 
 ### 공통 가이드
+
 - **명확한 변수명**과 **함수명** 사용
 - **주석**을 통한 복잡한 로직 설명
 - **에러 처리** 적절히 구현
@@ -95,6 +106,7 @@
 ### 이벤트 루프 (Event Loop) 최적화
 
 #### ❌ 이벤트 루프 블로킹 예시:
+
 ```typescript
 // 문제: 동기식 처리로 이벤트 루프 블로킹
 @Get('/heavy-task')
@@ -108,6 +120,7 @@ async heavyComputation() {
 ```
 
 #### ✅ 이벤트 루프 최적화:
+
 ```typescript
 // 개선: Worker Threads 또는 작업 분할로 논블로킹 처리
 import { Worker, isMainThread, parentPort, workerData } from 'worker_threads';
@@ -118,7 +131,7 @@ async heavyComputation() {
     const worker = new Worker(__filename, {
       workerData: { iterations: 10000000 }
     });
-    
+
     worker.on('message', resolve);
     worker.on('error', reject);
   });
@@ -138,12 +151,13 @@ if (!isMainThread) {
 ### 메모리 관리 최적화
 
 #### ❌ 메모리 누수 예시:
+
 ```typescript
 // 문제: 메모리 누수 발생 가능성
 @Injectable()
 export class DataCacheService {
   private cache = new Map(); // 무제한 증가 가능
-  
+
   async getData(key: string) {
     if (!this.cache.has(key)) {
       const data = await this.fetchExpensiveData(key);
@@ -155,22 +169,23 @@ export class DataCacheService {
 ```
 
 #### ✅ 메모리 최적화:
+
 ```typescript
 // 개선: LRU 캐시와 메모리 제한
-import LRU from 'lru-cache';
+import LRU from "lru-cache";
 
 @Injectable()
 export class DataCacheService {
   private cache = new LRU<string, any>({
-    max: 1000,        // 최대 항목 수
+    max: 1000, // 최대 항목 수
     maxAge: 1000 * 60 * 10, // 10분 TTL
     updateAgeOnGet: true,
     dispose: (key, value) => {
       // 메모리 정리 로직
       if (value?.cleanup) value.cleanup();
-    }
+    },
   });
-  
+
   async getData(key: string) {
     let data = this.cache.get(key);
     if (!data) {
@@ -185,19 +200,21 @@ export class DataCacheService {
 ### 비동기 처리 최적화
 
 #### ❌ 비효율적인 비동기 처리:
+
 ```typescript
 // 문제: 순차적 처리로 성능 저하
 @Get('/user-data/:id')
 async getUserData(@Param('id') id: string) {
   const user = await this.userService.findById(id);
-  const posts = await this.postService.findByUserId(id); 
+  const posts = await this.postService.findByUserId(id);
   const comments = await this.commentService.findByUserId(id);
-  
+
   return { user, posts, comments };
 }
 ```
 
 #### ✅ 병렬 비동기 처리:
+
 ```typescript
 // 개선: Promise.all로 병렬 처리
 @Get('/user-data/:id')
@@ -207,7 +224,7 @@ async getUserData(@Param('id') id: string) {
     this.postService.findByUserId(id),
     this.commentService.findByUserId(id)
   ]);
-  
+
   return { user, posts, comments };
 }
 
@@ -219,7 +236,7 @@ async getUserDataSafe(@Param('id') id: string) {
     this.postService.findByUserId(id),
     this.commentService.findByUserId(id)
   ]);
-  
+
   return {
     user: results[0].status === 'fulfilled' ? results[0].value : null,
     posts: results[1].status === 'fulfilled' ? results[1].value : [],
@@ -231,19 +248,21 @@ async getUserDataSafe(@Param('id') id: string) {
 ### Stream 기반 데이터 처리
 
 #### ❌ 메모리 비효율적인 대용량 데이터 처리:
+
 ```typescript
 // 문제: 전체 데이터를 메모리에 로드
 @Get('/export-users')
 async exportUsers(@Res() res: Response) {
   const users = await this.userService.findAll(); // 메모리 부족 위험
   const csv = this.convertToCSV(users);
-  
+
   res.setHeader('Content-Type', 'text/csv');
   res.send(csv);
 }
 ```
 
 #### ✅ Stream 기반 최적화:
+
 ```typescript
 // 개선: Stream으로 메모리 효율적 처리
 import { Transform } from 'stream';
@@ -252,7 +271,7 @@ import { Transform } from 'stream';
 async exportUsers(@Res() res: Response) {
   res.setHeader('Content-Type', 'text/csv');
   res.setHeader('Content-Disposition', 'attachment; filename=users.csv');
-  
+
   const userStream = this.userService.findAllAsStream();
   const csvTransform = new Transform({
     objectMode: true,
@@ -261,7 +280,7 @@ async exportUsers(@Res() res: Response) {
       callback(null, csvLine);
     }
   });
-  
+
   userStream.pipe(csvTransform).pipe(res);
 }
 ```
@@ -269,13 +288,16 @@ async exportUsers(@Res() res: Response) {
 ### 데이터베이스 연결 최적화
 
 #### ❌ 비효율적인 DB 연결 관리:
+
 ```typescript
 // 문제: 매 요청마다 새로운 연결 생성
 @Injectable()
 export class UserRepository {
   async findById(id: string) {
     const connection = await createConnection(); // 비효율적
-    const result = await connection.query('SELECT * FROM users WHERE id = ?', [id]);
+    const result = await connection.query("SELECT * FROM users WHERE id = ?", [
+      id,
+    ]);
     await connection.close();
     return result[0];
   }
@@ -283,15 +305,16 @@ export class UserRepository {
 ```
 
 #### ✅ 연결 풀 최적화:
+
 ```typescript
 // 개선: 연결 풀 사용
 @Injectable()
 export class UserRepository {
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
   ) {}
-  
+
   async findById(id: string) {
     // 연결 풀 자동 관리
     return this.userRepository.findOne({ where: { id } });
@@ -302,17 +325,17 @@ export class UserRepository {
 @Module({
   imports: [
     TypeOrmModule.forRoot({
-      type: 'mysql',
+      type: "mysql",
       // 연결 풀 최적화
       extra: {
-        connectionLimit: 20,      // 최대 연결 수
-        acquireTimeout: 60000,    // 연결 획득 타임아웃
-        timeout: 60000,           // 쿼리 타임아웃
-        reconnect: true,          // 자동 재연결
-        idleTimeout: 300000,      // 유휴 연결 타임아웃
-      }
-    })
-  ]
+        connectionLimit: 20, // 최대 연결 수
+        acquireTimeout: 60000, // 연결 획득 타임아웃
+        timeout: 60000, // 쿼리 타임아웃
+        reconnect: true, // 자동 재연결
+        idleTimeout: 300000, // 유휴 연결 타임아웃
+      },
+    }),
+  ],
 })
 export class DatabaseModule {}
 ```
@@ -320,6 +343,7 @@ export class DatabaseModule {}
 ### CPU 집약적 작업 최적화
 
 #### ❌ 메인 스레드 블로킹:
+
 ```typescript
 // 문제: CPU 집약적 작업이 메인 스레드 블로킹
 @Post('/process-image')
@@ -331,26 +355,27 @@ async processImage(@Body() data: ProcessImageDto) {
 ```
 
 #### ✅ Worker Pool 활용:
+
 ```typescript
 // 개선: Worker Pool로 CPU 작업 분산
-import { Worker, Pool } from 'workerpool';
+import { Worker, Pool } from "workerpool";
 
 @Injectable()
 export class ImageProcessingService {
-  private readonly workerPool = Pool('./image-worker.js', {
+  private readonly workerPool = Pool("./image-worker.js", {
     minWorkers: 2,
     maxWorkers: 4,
-    workerType: 'thread'
+    workerType: "thread",
   });
-  
+
   async processImage(imageBuffer: Buffer): Promise<Buffer> {
     try {
-      return await this.workerPool.exec('processImage', [imageBuffer]);
+      return await this.workerPool.exec("processImage", [imageBuffer]);
     } catch (error) {
-      throw new InternalServerErrorException('이미지 처리 실패');
+      throw new InternalServerErrorException("이미지 처리 실패");
     }
   }
-  
+
   onModuleDestroy() {
     this.workerPool.terminate();
   }
@@ -362,29 +387,34 @@ export class ImageProcessingService {
 ### 필수 검토 사항
 
 #### 이벤트 루프 최적화
+
 - [ ] CPU 집약적 작업이 이벤트 루프를 블로킹하지 않는가?
 - [ ] `setImmediate()`, `process.nextTick()` 사용이 적절한가?
 - [ ] 동기 함수(`fs.readFileSync` 등) 사용을 피했는가?
 
 #### 메모리 관리
+
 - [ ] 메모리 누수 가능성이 있는 코드가 있는가?
 - [ ] 대용량 데이터를 한 번에 메모리에 로드하지 않는가?
 - [ ] 캐시에 TTL과 크기 제한이 있는가?
 - [ ] 이벤트 리스너가 적절히 제거되는가?
 
 #### 비동기 처리
+
 - [ ] 병렬 처리 가능한 작업을 순차적으로 하고 있지 않은가?
 - [ ] Promise.all 사용 시 에러 처리가 적절한가?
 - [ ] async/await 사용이 올바른가?
 - [ ] 콜백 지옥을 피했는가?
 
 #### 데이터베이스 최적화
+
 - [ ] N+1 쿼리 문제가 없는가?
 - [ ] 적절한 인덱스가 설정되어 있는가?
 - [ ] 연결 풀 설정이 최적화되어 있는가?
 - [ ] 트랜잭션 범위가 적절한가?
 
 #### Stream 활용
+
 - [ ] 대용량 데이터 처리 시 Stream을 사용했는가?
 - [ ] 파일 업로드/다운로드에서 메모리 효율성을 고려했는가?
 - [ ] backpressure 처리가 되어 있는가?
@@ -404,17 +434,18 @@ export class ImageProcessingService {
 ### 성능 모니터링 권장사항
 
 #### 메트릭 수집
+
 ```typescript
 // 성능 메트릭 수집 미들웨어
 @Injectable()
 export class PerformanceMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const start = process.hrtime.bigint();
-    
-    res.on('finish', () => {
+
+    res.on("finish", () => {
       const duration = Number(process.hrtime.bigint() - start) / 1000000;
       const memUsage = process.memoryUsage();
-      
+
       // 메트릭 로깅
       console.log({
         method: req.method,
@@ -424,17 +455,18 @@ export class PerformanceMiddleware implements NestMiddleware {
         memory: {
           rss: `${Math.round(memUsage.rss / 1024 / 1024)}MB`,
           heapUsed: `${Math.round(memUsage.heapUsed / 1024 / 1024)}MB`,
-          heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`
-        }
+          heapTotal: `${Math.round(memUsage.heapTotal / 1024 / 1024)}MB`,
+        },
       });
     });
-    
+
     next();
   }
 }
 ```
 
 #### 프로파일링 도구 활용
+
 - **Clinic.js**: Node.js 애플리케이션 프로파일링
 - **0x**: 화염 그래프 생성
 - **Node.js Inspector**: Chrome DevTools 연동
@@ -445,28 +477,34 @@ export class PerformanceMiddleware implements NestMiddleware {
 프로젝트의 모든 OOP 관련 코드는 **SOLID 원칙**을 준수해야 합니다.
 
 #### S - Single Responsibility Principle (단일 책임 원칙)
+
 - 하나의 클래스는 하나의 책임만 가져야 합니다
 - 변경의 이유가 하나여야 합니다
 
 #### O - Open/Closed Principle (개방-폐쇄 원칙)
+
 - 확장에는 열려있고, 수정에는 닫혀있어야 합니다
 - 새로운 기능 추가 시 기존 코드 수정을 최소화해야 합니다
 
 #### L - Liskov Substitution Principle (리스코프 치환 원칙)
+
 - 상위 타입의 객체를 하위 타입의 객체로 치환해도 프로그램이 정상 작동해야 합니다
 - 상속 관계에서 IS-A 관계를 올바르게 구현해야 합니다
 
 #### I - Interface Segregation Principle (인터페이스 분리 원칙)
+
 - 클라이언트는 자신이 사용하지 않는 메서드에 의존하지 않아야 합니다
 - 큰 인터페이스를 작은 인터페이스들로 분리해야 합니다
 
 #### D - Dependency Inversion Principle (의존관계 역전 원칙)
+
 - 상위 모듈은 하위 모듈에 의존해서는 안됩니다
 - 추상화에 의존해야 하며, 구체화에 의존해서는 안됩니다
 
 ## 파일/폴더 구조
 
 ### Frontend
+
 ```
 apps/frontend/
 ├── src/
@@ -481,6 +519,7 @@ apps/frontend/
 - 각 컴포넌트/페이지는 `index.tsx`와 `styles.css` 파일 세트로 구성
 
 ### Backend
+
 ```
 apps/backend/
 ├── src/
@@ -504,6 +543,7 @@ apps/backend/
 ## 리뷰 포커스 영역
 
 ### 코드 품질
+
 - **가독성**: 명확한 변수명과 함수명 사용
 - **재사용성**: 공통 컴포넌트 및 유틸리티 함수 활용
 - **일관성**: 프로젝트 전반의 코딩 스타일 통일
@@ -513,6 +553,7 @@ apps/backend/
 OOP 관련 코드 리뷰 시 반드시 **어떤 SOLID 원칙을 위반했는지** 명시하고, **구체적인 개선 방안**을 제시해야 합니다.
 
 #### 리뷰 예시 형식:
+
 ```
 ❌ 문제점: [구체적인 코드 이슈 설명]
 📋 위반 원칙: SRP (Single Responsibility Principle)
@@ -521,6 +562,7 @@ OOP 관련 코드 리뷰 시 반드시 **어떤 SOLID 원칙을 위반했는지*
 ```
 
 ### 성능 최적화
+
 - **React.memo**, **useMemo**, **useCallback** 적절한 사용
 - **불필요한 리렌더링** 방지
 - **이미지 최적화** 및 **레이지 로딩** 고려
@@ -528,11 +570,13 @@ OOP 관련 코드 리뷰 시 반드시 **어떤 SOLID 원칙을 위반했는지*
 - **메모리 사용량** 최적화
 
 ### 접근성 (Accessibility)
+
 - **시맨틱 HTML** 요소 사용
 - **alt 속성**, **aria-label** 등 접근성 속성 추가
 - **키보드 네비게이션** 지원
 
 ### 보안
+
 - **XSS 방지**를 위한 입력값 검증
 - **민감한 정보** 노출 방지 (API 키, 패스워드 등)
 - **SQL 인젝션** 방지 (ORM 사용 권장)
@@ -540,12 +584,14 @@ OOP 관련 코드 리뷰 시 반드시 **어떤 SOLID 원칙을 위반했는지*
 - **외부 라이브러리** 보안 취약점 검토
 
 ### 데이터베이스 최적화
+
 - **인덱스** 적절한 사용과 성능 모니터링
 - **N+1 쿼리** 문제 방지 (eager loading 활용)
 - **쿼리 성능** 분석 및 최적화
 - **트랜잭션** 적절한 사용
 
 ### 테스트 코드 품질
+
 - **Jest** 단위 테스트 작성
 - **통합 테스트**를 통한 API 검증
 - **테스트 커버리지** 향상
@@ -554,6 +600,7 @@ OOP 관련 코드 리뷰 시 반드시 **어떤 SOLID 원칙을 위반했는지*
 ## React 모범 사례
 
 ### Hooks 사용
+
 ```typescript
 // ✅ 좋은 예시
 const [loading, setLoading] = useState<boolean>(false);
@@ -565,6 +612,7 @@ useEffect(() => {
 ```
 
 ### 컴포넌트 구조
+
 ```typescript
 // ✅ 좋은 예시
 interface ComponentProps {
@@ -583,6 +631,7 @@ const Component = ({ title, onAction }: ComponentProps) => {
 ```
 
 ### 에러 처리
+
 - **try-catch** 블록 적절한 사용
 - **에러 바운더리** 구현 고려
 - **사용자 친화적인 에러 메시지** 제공
@@ -592,18 +641,28 @@ const Component = ({ title, onAction }: ComponentProps) => {
 ### SRP (단일 책임 원칙) 적용
 
 #### ❌ SRP 위반 예시:
+
 ```typescript
 // 문제: 하나의 Service가 너무 많은 책임을 담당
 @Injectable()
 export class UserService {
-  async createUser(dto: CreateUserDto) { /* 사용자 생성 */ }
-  async sendWelcomeEmail(email: string) { /* 이메일 발송 */ }
-  async validateUserData(data: any) { /* 데이터 검증 */ }
-  async logUserAction(action: string) { /* 로그 기록 */ }
+  async createUser(dto: CreateUserDto) {
+    /* 사용자 생성 */
+  }
+  async sendWelcomeEmail(email: string) {
+    /* 이메일 발송 */
+  }
+  async validateUserData(data: any) {
+    /* 데이터 검증 */
+  }
+  async logUserAction(action: string) {
+    /* 로그 기록 */
+  }
 }
 ```
 
 #### ✅ SRP 준수 개선:
+
 ```typescript
 // 각 책임을 별도 서비스로 분리
 @Injectable()
@@ -618,23 +677,26 @@ export class UserService {
     // 단일 책임: 사용자 생성만 담당
     const validatedData = await this.validationService.validateUserData(dto);
     const user = await this.userRepository.create(validatedData);
-    
+
     await this.emailService.sendWelcomeEmail(user.email);
-    await this.logService.logUserAction('USER_CREATED', user.id);
-    
+    await this.logService.logUserAction("USER_CREATED", user.id);
+
     return user;
   }
 }
 
 @Injectable()
 export class EmailService {
-  async sendWelcomeEmail(email: string) { /* 이메일 발송만 담당 */ }
+  async sendWelcomeEmail(email: string) {
+    /* 이메일 발송만 담당 */
+  }
 }
 ```
 
 ### DIP (의존관계 역전 원칙) 적용
 
 #### ❌ DIP 위반 예시:
+
 ```typescript
 // 문제: 구체 클래스에 직접 의존
 @Injectable()
@@ -643,13 +705,14 @@ export class UserService {
 
   async createUser(dto: CreateUserDto) {
     const user = await this.createUserInDB(dto);
-    await this.emailSender.send(user.email, 'Welcome!'); // 강한 결합
+    await this.emailSender.send(user.email, "Welcome!"); // 강한 결합
     return user;
   }
 }
 ```
 
 #### ✅ DIP 준수 개선:
+
 ```typescript
 // 인터페이스 정의 (추상화)
 interface IEmailSender {
@@ -668,12 +731,12 @@ export class SMTPEmailSender implements IEmailSender {
 @Injectable()
 export class UserService {
   constructor(
-    @Inject('IEmailSender') private readonly emailSender: IEmailSender
+    @Inject("IEmailSender") private readonly emailSender: IEmailSender,
   ) {}
 
   async createUser(dto: CreateUserDto): Promise<User> {
     const user = await this.createUserInDB(dto);
-    await this.emailSender.send(user.email, 'Welcome!'); // 추상화에 의존
+    await this.emailSender.send(user.email, "Welcome!"); // 추상화에 의존
     return user;
   }
 }
@@ -682,16 +745,18 @@ export class UserService {
 ### OCP (개방-폐쇄 원칙) 적용
 
 #### ❌ OCP 위반 예시:
+
 ```typescript
 // 문제: 새로운 알림 타입 추가 시 기존 코드 수정 필요
 @Injectable()
 export class NotificationService {
   async sendNotification(type: string, message: string) {
-    if (type === 'email') {
+    if (type === "email") {
       // 이메일 발송 로직
-    } else if (type === 'sms') {
+    } else if (type === "sms") {
       // SMS 발송 로직
-    } else if (type === 'push') { // 새로운 타입 추가 시 수정 필요
+    } else if (type === "push") {
+      // 새로운 타입 추가 시 수정 필요
       // Push 알림 로직
     }
   }
@@ -699,6 +764,7 @@ export class NotificationService {
 ```
 
 #### ✅ OCP 준수 개선:
+
 ```typescript
 // 추상화 정의
 abstract class NotificationSender {
@@ -731,12 +797,12 @@ export class PushNotificationSender extends NotificationSender {
 // 서비스는 확장에 열려있고 수정에 닫혀있음
 @Injectable()
 export class NotificationService {
-  constructor(
-    private readonly senders: NotificationSender[]
-  ) {}
+  constructor(private readonly senders: NotificationSender[]) {}
 
   async sendNotification(senderType: string, message: string) {
-    const sender = this.senders.find(s => s.constructor.name.includes(senderType));
+    const sender = this.senders.find((s) =>
+      s.constructor.name.includes(senderType),
+    );
     await sender?.send(message);
   }
 }
@@ -774,16 +840,19 @@ export class NotificationService {
 ## 커밋 및 PR 가이드
 
 ### 커밋 메시지
+
 - **한글**로 작성하되, 기능별로 구분
 - 형식: `[타입] 간단한 설명`
 
 #### Frontend 예시
+
 - `[추가] 공지사항 테이블 컴포넌트 구현`
 - `[수정] 홈페이지 반응형 레이아웃 개선`
 - `[버그수정] 피드백 폼 유효성 검사 오류 해결`
 - `[성능] 이미지 레이지 로딩 및 최적화 적용`
 
 #### Backend 예시
+
 - `[추가] 사용자 인증 API 엔드포인트 구현`
 - `[수정] 공지사항 조회 쿼리 성능 최적화`
 - `[버그수정] JWT 토큰 만료 시간 오류 해결`
@@ -791,6 +860,7 @@ export class NotificationService {
 - `[성능] 이벤트 루프 블로킹 방지를 위한 Worker Thread 적용`
 
 ### Pull Request
+
 - **상세한 설명**과 **변경사항** 명시
 - **스크린샷** 또는 **GIF**로 UI 변경사항 시각화 (Frontend)
 - **API 테스트 결과** 및 **Postman Collection** 첨부 (Backend)
@@ -801,23 +871,28 @@ export class NotificationService {
 ## 특별 고려사항
 
 ### 다국어 지원
+
 - 추후 영어 버전 지원을 위한 **국제화(i18n)** 고려
 - 하드코딩된 텍스트 최소화
 
 ### 모바일 우선 설계
+
 - **모바일 퍼스트** 반응형 디자인
 - **터치 인터페이스** 최적화
 
 ### 브라우저 호환성
+
 - **모던 브라우저** 지원 (Chrome, Safari, Firefox, Edge)
 - **폴리필** 필요시 적용
 
 ### 모노레포 고려사항
+
 - **앱 간 공통 코드** 재사용성 고려
 - **의존성 관리** 주의
 - **빌드 최적화** 및 **CI/CD** 효율성
 
 ### 성능 모니터링 및 운영
+
 - **APM 도구** 연동 (New Relic, DataDog 등)
 - **로그 집계** 시스템 구축
 - **헬스체크** 엔드포인트 구현
