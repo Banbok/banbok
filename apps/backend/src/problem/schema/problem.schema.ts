@@ -9,7 +9,7 @@ export const siteEnum = pgEnum(
 );
 
 export const problem = pgTable('problem', {
-  id: serial('id'),
+  id: serial('id').primaryKey(),
   problemUrl: text('problemUrl').notNull().unique(),
   site: siteEnum('site').notNull(),
   memberId: integer('member_id'),
