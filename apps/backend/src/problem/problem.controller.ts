@@ -4,7 +4,7 @@ import { ProblemService } from './problem.service';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { SubmitProblemDto } from '@banbok/shared';
 
-@Controller('problem')
+@Controller('problems')
 export class ProblemController {
   constructor(private readonly problemService: ProblemService) {}
 
