@@ -12,7 +12,7 @@ export const problem = pgTable('problem', {
   id: serial('id').primaryKey(),
   problemUrl: text('problemUrl').notNull().unique(),
   site: siteEnum('site').notNull(),
-  memberId: integer('member_id'),
+  memberId: integer('member_id').references(() => member.id),
 });
 
 export const problemRelations = relations(problem, ({ one }) => ({
