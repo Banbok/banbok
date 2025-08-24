@@ -28,7 +28,8 @@ export class AuthService {
   constructor(
     private readonly memberService: MemberService,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+  }
 
   async validateOAuthUser(oauthUserInfo: OAuthUserInfo): Promise<AuthResult> {
     const existingUser = await this.findExistingUser(oauthUserInfo.email);
@@ -46,8 +47,8 @@ export class AuthService {
   }
 
   private async findExistingUser(email: string) {
-    const users = await this.memberService.findByEmail(email);
-    return users.length > 0 ? users[0] : null;
+    const user = await this.memberService.findByEmail(email);
+    return user || null;
   }
 
   private async createAuthResultForExistingUser(
