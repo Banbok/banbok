@@ -4,6 +4,7 @@ import { STATUS_CODES } from 'node:http';
 
 const UNKNOWN_ERROR = 'UNKNOWN_ERROR';
 
+// TODO: 추후 에러에 대한 로깅 추가
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: unknown, host: ArgumentsHost) {
