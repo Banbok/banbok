@@ -1,6 +1,5 @@
 {
   "singleQuote": true,
   "trailingComma": "all",
-  "bracketSameLine": true,
-  "bracketSpacing": true
+  "tabWidth": 4
 }
