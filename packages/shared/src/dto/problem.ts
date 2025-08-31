@@ -1,3 +1,3 @@
-export interface SubmitProblemDto {
+export interface SubmitProblemRequestDto {
   readonly link: string;
 }

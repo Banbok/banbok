@@ -1,10 +1,10 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
-import { DATABASE_CONNECTION } from '../database/constants/database-connection';
+import { BadRequestException, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { DATABASE_CONNECTION } from '../database/constants';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import * as schema from './schema/problem.schema';
 import { MemberService } from '../member/member.service';
 import { Site } from './enums/site.enum';
-import { problem } from './schema/problem.schema';
+import { problem } from './schema';
 
 @Injectable()
 export class ProblemService {
@@ -12,7 +12,8 @@ export class ProblemService {
     @Inject(DATABASE_CONNECTION)
     private readonly database: NodePgDatabase<typeof schema>,
     private readonly memberService: MemberService,
-  ) {}
+  ) {
+  }
 
   async submit(memberId: number, link: string) {
     const [member, submittedProblem] = await Promise.all([
@@ -21,16 +22,14 @@ export class ProblemService {
     ]);
 
     if (!member) {
-      throw new HttpException(
+      throw new BadRequestException(
         '존재하지 않는 멤버입니다.',
-        HttpStatus.BAD_REQUEST,
       );
     }
 
     if (submittedProblem) {
-      throw new HttpException(
+      throw new BadRequestException(
         '이미 제출된 문제입니다.',
-        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -42,17 +41,18 @@ export class ProblemService {
   }
 
   private async isSubmitted(memberId: number, link: string) {
-    return this.database.query.problem.findFirst({
+    const problem = await this.database.query.problem.findFirst({
       where: (problem, { eq, and }) =>
         and(eq(problem.memberId, memberId), eq(problem.problemUrl, link)),
     });
+
+    return !!problem;
   }
 
   private extractSite(link: string): Site {
     if (!this.isValidUrl(link)) {
-      throw new HttpException(
+      throw new BadRequestException(
         '올바르지 않은 URL 입니다.',
-        HttpStatus.BAD_REQUEST,
       );
     }
 

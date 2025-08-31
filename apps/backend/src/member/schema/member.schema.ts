@@ -1,6 +1,6 @@
 import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { problem } from '../../problem/schema/problem.schema';
+import { problem } from '../../problem/schema';
 
 export const member = pgTable('member', {
   id: serial('id').primaryKey(),
