@@ -4,14 +4,18 @@ import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { COOKIE_CONFIG } from '../common/constants';
+import { AuthControllerSwagger, NaverLoginSwagger } from './swagger';
 
 @Controller()
+@AuthControllerSwagger
 export class AuthController {
   constructor(
     private authService: AuthService,
     private configService: ConfigService,
-  ) {}
+  ) {
+  }
 
+  @NaverLoginSwagger
   @UseGuards(NaverAuthGuard)
   @Get('member/auth/naver')
   async naverLogin() {
