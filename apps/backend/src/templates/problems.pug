@@ -1,0 +1,77 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    title 코딩테스트, 반복이 생명입니다!
+  body(style='font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0;')
+    table(align='center' border='0' cellpadding='0' cellspacing='0' width='600' style='border:1px solid #ddd; background-color: #ffffff; padding:20px; padding:0; margin:0;')
+      tr
+        td(align='center' style='padding:0; margin:0; overflow: visible')
+          svg(xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 120' width='600' height='120' preserveAspectRatio='none')
+            defs
+              linearGradient#grad(x1='0%' y1='0%' x2='100%' y2='0%')
+                stop(offset='0%' style='stop-color:#101828; stop-opacity:1')
+                stop(offset='100%' style='stop-color:#4CAF50; stop-opacity:1')
+            polygon(points='0,0 600,0 600,120 0,80' fill='url(#grad)')
+      tr
+        td(align='center' style='padding: 20px 0; font-size: 24px; font-weight: bold; color:#333;')
+          | 📢 안녕하세요 #{name}님! 새로운 알림이 도착했습니다
+      tr
+        td(style='text-align: center; padding: 20px; font-size: 16px; color:#555;')
+          //- 1일차 복습 문제
+          if problemsByDays.day1 && problemsByDays.day1.length > 0
+            div(style='background-color:#e0f7fa; padding:15px; border-radius:8px; margin-bottom:10px;')
+              div(style='font-weight: bold; margin-bottom: 8px;') 📅 1일차 복습 문제 (#{problemsByDays.day1.length}개)
+              each problem in problemsByDays.day1
+                div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #00acc1;')
+                  a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
+                    span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
+                    | 문제 ##{problem.id}
+
+          //- 3일차 복습 문제
+          if problemsByDays.day3 && problemsByDays.day3.length > 0
+            div(style='background-color:#fff3e0; padding:15px; border-radius:8px; margin-bottom:10px;')
+              div(style='font-weight: bold; margin-bottom: 8px;') 📅 3일차 복습 문제 (#{problemsByDays.day3.length}개)
+              each problem in problemsByDays.day3
+                div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #ff9800;')
+                  a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
+                    span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
+                    | 문제 ##{problem.id}
+
+          //- 7일차 복습 문제
+          if problemsByDays.day7 && problemsByDays.day7.length > 0
+            div(style='background-color:#ede7f6; padding:15px; border-radius:8px; margin-bottom:10px;')
+              div(style='font-weight: bold; margin-bottom: 8px;') 📅 7일차 복습 문제 (#{problemsByDays.day7.length}개)
+              each problem in problemsByDays.day7
+                div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #9c27b0;')
+                  a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
+                    span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
+                    | 문제 ##{problem.id}
+
+          //- 21일차 복습 문제
+          if problemsByDays.day21 && problemsByDays.day21.length > 0
+            div(style='background-color:#fce4ec; padding:15px; border-radius:8px; margin-bottom:10px;')
+              div(style='font-weight: bold; margin-bottom: 8px;') 📅 21일차 복습 문제 (#{problemsByDays.day21.length}개)
+              each problem in problemsByDays.day21
+                div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #e91e63;')
+                  a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
+                    span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
+                    | 문제 ##{problem.id}
+
+          //- 복습할 문제가 없는 경우
+          - var hasProblems = (problemsByDays.day1 && problemsByDays.day1.length > 0) || (problemsByDays.day3 && problemsByDays.day3.length > 0) || (problemsByDays.day7 && problemsByDays.day7.length > 0) || (problemsByDays.day21 && problemsByDays.day21.length > 0)
+          if !hasProblems
+            div(style='background-color:#e8f5e8; padding:20px; border-radius:8px; margin-bottom:10px;')
+              | 🎉 오늘은 복습할 문제가 없어요! 새로운 문제를 풀어보세요 ✨
+
+      tr
+        td(align='center' style='padding: 30px;')
+          a(href='https://banbok.vercel.app/' style='background-color:#4CAF50; color:white; padding:12px 24px; text-decoration:none; border-radius:6px; display:inline-block;')
+            | 사이트에서 확인하기
+      tr
+        td(style='text-align: center; color: #777; margin-top: 20px;')
+          p
+            b Banbok | banbok.vercel.app
+      tr
+        td(style='padding: 20px; font-size: 12px; color:#aaa;' align='center')
+          | 이 메일은 발신 전용입니다. 문의사항은 고객센터를 이용해주세요.
