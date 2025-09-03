@@ -1,16 +1,16 @@
-import { pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { pgTable, serial, text } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { problem } from '../../problem/schema';
+import { baseColumns } from '../../common/db/base.schema';
 
 export const member = pgTable('member', {
+  ...baseColumns,
   id: serial('id').primaryKey(),
   email: text('email').notNull().unique(),
   name: text('name'),
   provider: text('provider').notNull(),
   providerId: text('providerId').notNull(),
   profileImage: text('profileImage'),
-  createdAt: timestamp('created_at', { mode: 'string' }).defaultNow(),
-  updatedAt: timestamp('updated_at', { mode: 'string' }).defaultNow(),
 });
 
 export const memberRelations = relations(member, ({ many }) => ({

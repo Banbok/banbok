@@ -1,19 +1,21 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { DATABASE_CONNECTION } from '../database/constants/database-connection';
-import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import * as schema from './schema/member.schema';
-import { member } from './schema/member.schema';
+import { DATABASE_CONNECTION } from '../../database/constants';
 import { eq } from 'drizzle-orm';
+import { NodePgDatabase } from 'drizzle-orm/node-postgres';
+import { member } from '../schema';
+import * as schema from '../schema';
 
 @Injectable()
-export class MemberService {
+export class MemberRepository {
   constructor(
     @Inject(DATABASE_CONNECTION)
     private readonly database: NodePgDatabase<typeof schema>,
-  ) {}
+  ) {
+  }
 
   async findAll() {
     return this.database.select().from(member);
+
   }
 
   async findById(id: number) {
