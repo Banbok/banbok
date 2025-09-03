@@ -3,6 +3,7 @@ import { NaverAuthGuard } from './guards/naver-auth.guard';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
+import { COOKIE_CONFIG } from '../common/constants';
 
 @Controller()
 export class AuthController {
@@ -26,8 +27,8 @@ export class AuthController {
     res.cookie('accessToken', result.accessToken, {
       httpOnly: true, // XSS 방지 (JavaScript로 접근 불가)
       secure: this.configService.get<string>('NODE_ENV') === 'production',
-      sameSite: 'lax', // CSRF 방지
-      maxAge: 24 * 60 * 60 * 1000, // 1일
+      sameSite: COOKIE_CONFIG.SAME_SITE, // CSRF 방지
+      maxAge: COOKIE_CONFIG.MAX_AGE, // 1일
       path: '/',
     });
 

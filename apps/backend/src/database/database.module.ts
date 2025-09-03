@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { DATABASE_CONNECTION } from './constants/database-connection';
+import { DATABASE_CONNECTION } from './constants';
 import { ConfigService } from '@nestjs/config';
 import { Pool } from 'pg';
 import { drizzle } from 'drizzle-orm/node-postgres';

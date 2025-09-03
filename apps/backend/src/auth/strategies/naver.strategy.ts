@@ -2,23 +2,24 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-oauth2';
+import { OAUTH_URLS, OAUTH_SCOPES } from '../../common/constants';
 
 @Injectable()
 export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
   constructor(private configService: ConfigService) {
     super({
-      authorizationURL: 'https://nid.naver.com/oauth2.0/authorize',
-      tokenURL: 'https://nid.naver.com/oauth2.0/token',
+      authorizationURL: OAUTH_URLS.NAVER.AUTHORIZE,
+      tokenURL: OAUTH_URLS.NAVER.TOKEN,
       clientID: configService.get<string>('NAVER_CLIENT_ID'),
       clientSecret: configService.get<string>('NAVER_CLIENT_SECRET'),
       callbackURL: configService.get<string>('NAVER_CALLBACK_URL'),
-      scope: 'name email',
+      scope: OAUTH_SCOPES.NAVER,
     });
   }
 
   async userProfile(accessToken: string, done: any): Promise<any> {
     try {
-      const response = await fetch('https://openapi.naver.com/v1/nid/me', {
+      const response = await fetch(OAUTH_URLS.NAVER.PROFILE, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },

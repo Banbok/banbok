@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { MemberService } from '../member/member.service';
+import { MemberService } from '../member/service';
 import * as schema from '../member/schema/member.schema';
 
 export interface OAuthUserInfo {
@@ -42,12 +42,12 @@ export class AuthService {
   }
 
   async findUserByEmail(email: string) {
-    const users = await this.memberService.findByEmail(email);
+    const users = await this.memberService.getByEmail(email);
     return users[0] || null;
   }
 
   private async findExistingUser(email: string) {
-    const user = await this.memberService.findByEmail(email);
+    const user = await this.memberService.getByEmail(email);
     return user || null;
   }
 
@@ -77,7 +77,7 @@ export class AuthService {
   }
 
   private async createNewUser(oauthUserInfo: OAuthUserInfo) {
-    const newUsers = await this.memberService.insert({
+    const newUsers = await this.memberService.create({
       email: oauthUserInfo.email,
       name: oauthUserInfo?.name,
       provider: oauthUserInfo.provider,
