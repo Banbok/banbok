@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TaskService } from './service';
-import { TaskController } from './controller';
 import { TaskProcessor } from './processor';
 import { BullModule } from '@nestjs/bullmq';
 import { ProblemModule } from '../problem/problem.module';
@@ -15,7 +14,6 @@ import { QUEUE_NAMES } from '../common/constants';
     ProblemModule,
     MailModule,
   ],
-  controllers: [TaskController],
   providers: [TaskService, TaskProcessor],
 })
 export class TaskModule {
