@@ -85,12 +85,13 @@ export class TaskProcessor extends WorkerHost {
     });
 
     // 3. 각 유저에게 이메일 발송 (문제가 있을 때만)
+    const emailPromises = [];
     for (const [memberId, data] of reminderMap) {
       if (data.problems.day1.length > 0 ||
         data.problems.day3.length > 0 ||
         data.problems.day7.length > 0 ||
         data.problems.day21.length > 0) {
-        await this.mailService.sendEmail({
+        emailPromises.push(this.mailService.sendEmail({
           to: data.member.email,
           subject: EMAIL_SUBJECTS.PROBLEM_REMINDER,
           template: EMAIL_TEMPLATES.PROBLEMS,
@@ -98,9 +99,10 @@ export class TaskProcessor extends WorkerHost {
             name: data.member.name,
             problemsByDays: data.problems,
           },
-        })
+        }));
       }
     }
+    await Promise.all(emailPromises);
 
     return {
       totalMembers: reminderMap.size,
