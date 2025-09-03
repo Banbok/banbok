@@ -9,12 +9,12 @@ import * as path from 'path';
     MailerModule.forRootAsync({
       useFactory: () => ({
         transport: {
-          host: process.env.SMPT_HOST,
-          port: +process.env.SMPT_PORT,
+          host: process.env.SMTP_HOST,
+          port: +process.env.SMTP_PORT,
           secure: false,
           auth: {
-            user: process.env.SMPT_USER,
-            pass: process.env.SMPT_PASS,
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
           },
           tls: {
             rejectUnauthorized: false,
