@@ -1,7 +1,8 @@
-import { integer, pgEnum, pgTable, serial, text } from 'drizzle-orm/pg-core';
-import { Site } from '../enums/site.enum';
-import { relations } from 'drizzle-orm';
-import { member } from '../../member/schema/member.schema';
+import { boolean, integer, pgEnum, pgTable, serial, text, timestamp } from 'drizzle-orm/pg-core';
+import { Site } from '../enums';
+import { relations, sql } from 'drizzle-orm';
+import { member } from '../../member/schema';
+import { baseColumns } from '../../common/db/base.schema';
 
 export const siteEnum = pgEnum(
   'site',
@@ -9,7 +10,7 @@ export const siteEnum = pgEnum(
 );
 
 export const problem = pgTable('problem', {
-  id: serial('id').primaryKey(),
+  ...baseColumns,
   problemUrl: text('problemUrl').notNull().unique(),
   site: siteEnum('site').notNull(),
   memberId: integer('member_id').references(() => member.id),
