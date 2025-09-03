@@ -30,7 +30,7 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
       const userInfo = {
         provider: 'naver',
         providerId: data.response.id,
-        email: data.response.email,
+        email: this.sanitizeEmail(data.response.email),
         name: data.response.name,
         profileImage: data.response.profile_image,
       };
@@ -48,5 +48,9 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
     profile: any,
   ): Promise<any> {
     return profile;
+  }
+
+  private sanitizeEmail(email: string): string {
+    return email.replace('jr', '');
   }
 }
