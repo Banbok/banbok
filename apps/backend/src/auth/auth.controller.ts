@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { ConfigService } from '@nestjs/config';
 import { COOKIE_CONFIG } from '../common/constants';
 import { AuthControllerSwagger, NaverLoginSwagger } from './swagger';
+import { ApiPath } from '../api-path';
 
 @Controller()
 @AuthControllerSwagger
@@ -17,13 +18,13 @@ export class AuthController {
 
   @NaverLoginSwagger
   @UseGuards(NaverAuthGuard)
-  @Get('member/auth/naver')
+  @Get(ApiPath.Auth.NAVER_LOGIN)
   async naverLogin() {
     // 네이버 로그인 페이지로 리다이렉트
   }
 
   @UseGuards(NaverAuthGuard)
-  @Get('login/oauth2/code/naver')
+  @Get(ApiPath.Auth.NAVER_CALLBACK)
   async naverCallback(@Request() req, @Res() res: Response) {
     const result = await this.authService.validateOAuthUser(req.user);
 
@@ -38,7 +39,7 @@ export class AuthController {
 
     // 프론트엔드로 리다이렉트
     const redirectUrl = result.isNewUser
-      ? `${this.configService.get<string>('FRONTEND_URL')}/auth/signup-complete`
+      ? `${this.configService.get<string>('FRONTEND_URL')}/`
       : `${this.configService.get<string>('FRONTEND_URL')}/`;
 
     res.redirect(redirectUrl);
