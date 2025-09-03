@@ -37,10 +37,7 @@ export class AuthController {
       path: '/',
     });
 
-    // 프론트엔드로 리다이렉트
-    const redirectUrl = result.isNewUser
-      ? `${this.configService.get<string>('FRONTEND_URL')}/`
-      : `${this.configService.get<string>('FRONTEND_URL')}/`;
+    const redirectUrl = `${this.configService.get<string>('FRONTEND_URL')}/`;
 
     res.redirect(redirectUrl);
   }

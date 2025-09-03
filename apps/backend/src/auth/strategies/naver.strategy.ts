@@ -51,6 +51,9 @@ export class NaverStrategy extends PassportStrategy(Strategy, 'naver') {
   }
 
   private sanitizeEmail(email: string): string {
-    return email.replace('jr', '');
+    if (email.includes('@jr.naver.com')) {
+      return email.replace('@jr.naver.com', '@naver.com');
+    }
+    return email;
   }
 }
