@@ -1,4 +1,4 @@
-export interface MemberMyResponseDto {
+export interface MyInfoResponseDto {
   readonly id: number;
   readonly email: string;
   readonly name: string;
