@@ -3,6 +3,15 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Member } from '../../schema';
 
 export class MyInfoResponse implements IMyInfoResponseDto {
+  private constructor(member: typeof Member.$inferSelect) {
+    this.id = member.id;
+    this.email = member.email;
+    this.name = member.name;
+    this.provider = member.provider;
+    this.providerId = member.providerId;
+    this.profileImage = member.profileImage;
+  }
+
   @ApiProperty({
     example: 1,
     description: '회원 고유 ID',
@@ -41,13 +50,6 @@ export class MyInfoResponse implements IMyInfoResponseDto {
   profileImage: string | null;
 
   static from(member: typeof Member.$inferSelect): MyInfoResponse {
-    const response = new MyInfoResponse();
-    response.id = member.id;
-    response.email = member.email;
-    response.name = member.name;
-    response.provider = member.provider;
-    response.providerId = member.providerId;
-    response.profileImage = member.profileImage;
-    return response;
+    return new MyInfoResponse(member);
   }
 }
