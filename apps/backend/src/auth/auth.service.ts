@@ -13,7 +13,7 @@ export interface OAuthUserInfo {
 
 export interface AuthResult {
   isNewUser: boolean;
-  user: typeof schema.member.$inferSelect;
+  user: typeof schema.Member.$inferSelect;
   accessToken: string;
 }
 
@@ -88,7 +88,7 @@ export class AuthService {
     return newUsers[0];
   }
 
-  private generateAccessToken(user: typeof schema.member.$inferSelect): string {
+  private generateAccessToken(user: typeof schema.Member.$inferSelect): string {
     const payload: JwtPayload = {
       sub: user.id,
       email: user.email,

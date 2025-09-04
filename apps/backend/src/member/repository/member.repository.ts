@@ -2,7 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE_CONNECTION } from '../../database/constants';
 import { eq } from 'drizzle-orm';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
-import { member } from '../schema';
+import { Member } from '../schema';
 import * as schema from '../schema';
 
 @Injectable()
@@ -14,23 +14,23 @@ export class MemberRepository {
   }
 
   async findAll() {
-    return this.database.select().from(member);
+    return this.database.select().from(Member);
 
   }
 
   async findById(id: number) {
-    return this.database.query.member.findFirst({
-      where: eq(member.id, id),
+    return this.database.query.Member.findFirst({
+      where: eq(Member.id, id),
     });
   }
 
   async findByEmail(email: string) {
-    return this.database.query.member.findFirst({
-      where: eq(member.email, email),
+    return this.database.query.Member.findFirst({
+      where: eq(Member.email, email),
     });
   }
 
-  async insert(req: typeof schema.member.$inferInsert) {
-    return this.database.insert(member).values(req).returning();
+  async insert(req: typeof schema.Member.$inferInsert) {
+    return this.database.insert(Member).values(req).returning();
   }
 }

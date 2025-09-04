@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { DATABASE_CONNECTION } from '../../database/constants';
 import { NodePgDatabase } from 'drizzle-orm/node-postgres';
 import { eq, and } from 'drizzle-orm';
-import { problem } from '../schema';
-import { member } from '../../member/schema';
+import { Problem } from '../schema';
+import { Member } from '../../member/schema';
 import * as schema from '../schema';
 
 @Injectable()
@@ -15,34 +15,34 @@ export class ProblemRepository {
   }
 
   async findAll() {
-    return this.database.select().from(problem);
+    return this.database.select().from(Problem);
   }
 
   async findByMemberIdAndUrl(memberId: number, problemUrl: string) {
-    return this.database.query.problem.findFirst({
-      where: and(eq(problem.memberId, memberId), eq(problem.problemUrl, problemUrl)),
+    return this.database.query.Problem.findFirst({
+      where: and(eq(Problem.memberId, memberId), eq(Problem.problemUrl, problemUrl)),
     });
   }
 
-  async insert(req: typeof schema.problem.$inferInsert) {
-    return this.database.insert(problem).values(req).returning();
+  async insert(req: typeof schema.Problem.$inferInsert) {
+    return this.database.insert(Problem).values(req).returning();
   }
 
   async findProblemsWithMembers() {
     return this.database
       .select({
-        id: problem.id,
-        problemUrl: problem.problemUrl,
-        site: problem.site,
-        createdAt: problem.createdAt,
-        memberId: problem.memberId,
+        id: Problem.id,
+        problemUrl: Problem.problemUrl,
+        site: Problem.site,
+        createdAt: Problem.createdAt,
+        memberId: Problem.memberId,
         member: {
-          id: member.id,
-          email: member.email,
-          name: member.name,
+          id: Member.id,
+          email: Member.email,
+          name: Member.name,
         },
       })
-      .from(problem)
-      .innerJoin(member, eq(problem.memberId, member.id));
+      .from(Problem)
+      .innerJoin(Member, eq(Problem.memberId, Member.id));
   }
 }

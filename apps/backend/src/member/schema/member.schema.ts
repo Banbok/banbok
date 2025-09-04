@@ -1,11 +1,10 @@
 import { pgTable, serial, text } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
-import { problem } from '../../problem/schema';
+import { Problem } from '../../problem/schema';
 import { baseColumns } from '../../common/db/base.schema';
 
-export const member = pgTable('member', {
+export const Member = pgTable('member', {
   ...baseColumns,
-  id: serial('id').primaryKey(),
   email: text('email').notNull().unique(),
   name: text('name'),
   provider: text('provider').notNull(),
@@ -13,6 +12,6 @@ export const member = pgTable('member', {
   profileImage: text('profileImage'),
 });
 
-export const memberRelations = relations(member, ({ many }) => ({
-  problem: many(problem),
+export const memberRelations = relations(Member, ({ many }) => ({
+  Problem: many(Problem),
 }));

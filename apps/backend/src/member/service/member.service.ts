@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import * as schema from '../schema/member.schema';
 import { MemberRepository } from '../repository';
 
@@ -10,18 +10,22 @@ export class MemberService {
   }
 
   async getAll() {
-    return await this.memberRepository.findAll();
+    return this.memberRepository.findAll();
   }
 
   async getById(id: number) {
-    return await this.memberRepository.findById(id);
+    const member = await this.memberRepository.findById(id);
+    if (!member) {
+      throw new BadRequestException('멤버가 존재하지 않습니다.');
+    }
+    return member;
   }
 
   async getByEmail(email: string) {
-    return await this.memberRepository.findByEmail(email);
+    return this.memberRepository.findByEmail(email);
   }
 
-  async create(req: typeof schema.member.$inferInsert) {
+  async create(req: typeof schema.Member.$inferInsert) {
     return await this.memberRepository.insert(req);
   }
 }
