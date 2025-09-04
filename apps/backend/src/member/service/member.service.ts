@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import * as schema from '../schema/member.schema';
 import { MemberRepository } from '../repository';
 
@@ -16,7 +16,7 @@ export class MemberService {
   async getById(id: number) {
     const member = await this.memberRepository.findById(id);
     if (!member) {
-      throw new BadRequestException('멤버가 존재하지 않습니다.');
+      throw new NotFoundException('멤버가 존재하지 않습니다.');
     }
     return member;
   }
