@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import { MemberService } from '../service';
 import { ApiPath } from '../../api-path';
 import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
@@ -6,9 +6,9 @@ import { User } from 'src/common/decorators';
 import { MyInfoResponse } from '../dto';
 import { MemberControllerSwagger, MyInfoSwagger } from '../swagger/member-controller.swagger';
 
+@Controller()
 @MemberControllerSwagger
 @UseGuards(JwtAuthGuard)
-@Controller()
 export class MemberController {
   constructor(
     private readonly memberService: MemberService,
