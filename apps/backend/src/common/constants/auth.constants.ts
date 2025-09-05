@@ -3,6 +3,7 @@ export const JWT_EXPIRES_IN = '1d';
 export const COOKIE_CONFIG = {
   SAME_SITE: 'lax' as const,
   MAX_AGE: 24 * 60 * 60 * 1000, // 하루 (밀리초)
+  ACCESS_TOKEN_COOKIE_KEY: 'accessToken',
 };
 
 export const OAUTH_URLS = {
