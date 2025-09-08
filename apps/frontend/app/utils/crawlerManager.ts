@@ -1,8 +1,11 @@
-import { SiteCrawler, CrawlingResult } from "../_type/crawler.type";
+import * as cheerio from "cheerio";
+import { SubmitProblemRequestDto } from "@banbok/shared";
+
+import { SiteCrawler } from "../_type/crawler.type";
+
 import { baekjoonCrawler } from "./crawlers/baekjoonCrawler";
 import { leetcodeCrawler } from "./crawlers/leetcodeCrawler";
 import { programmersCrawler } from "./crawlers/programmersCrawler";
-import * as cheerio from "cheerio";
 
 export class CrawlerManager {
   private crawlers: SiteCrawler[] = [
@@ -11,7 +14,7 @@ export class CrawlerManager {
     leetcodeCrawler,
   ];
 
-  async crawl(url: string): Promise<CrawlingResult> {
+  async crawl(url: string): Promise<SubmitProblemRequestDto> {
     const response = await fetch(url, {
       headers: {
         "User-Agent":
