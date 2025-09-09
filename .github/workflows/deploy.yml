@@ -109,14 +109,13 @@ jobs:
           # Wait for backend container to be ready
           sleep 30
           
-          # Run database migration
+          # Push database schema directly (simpler than generate + migrate)
           gcloud compute ssh ${{ secrets.VM_NAME }} \
             --zone=${{ secrets.GCP_ZONE }} \
             --project=${{ secrets.GCP_PROJECT_ID }} \
             --command="
               cd ~/banbok &&
-              docker compose exec -T backend npm run db:generate &&
-              docker compose exec -T backend npm run db:migrate
+              docker compose exec -T backend npm run db:push
             "
 
       - name: Get VM external IP

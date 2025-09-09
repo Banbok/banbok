@@ -47,6 +47,8 @@ RUN adduser --system --uid 1001 nestjs
 # Copy necessary files
 COPY --from=builder /app/apps/backend/dist ./dist
 COPY --from=builder /app/apps/backend/package*.json ./
+COPY --from=builder /app/apps/backend/drizzle.config.ts ./
+COPY --from=builder /app/apps/backend/src ./src
 COPY --from=deps /app/node_modules ./node_modules
 
 # Change ownership
