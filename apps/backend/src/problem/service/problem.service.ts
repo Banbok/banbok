@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { MemberService } from '../../member/service';
 import { ProblemRepository } from '../repository';
 import { Site } from '../enums';
@@ -12,6 +12,15 @@ export class ProblemService {
     private readonly memberService: MemberService,
   ) {
   }
+
+  async getList(memberId: number) {
+    if (!(await this.memberService.isExistById(memberId))) {
+      throw new NotFoundException('존재하지 않는 멤버입니다.');
+    }
+
+    return await this.problemRepository.findAllByMemberId(memberId);
+  }
+
 
   async submit(memberId: number, dto: SubmitProblemRequestDto): Promise<void> {
     const { link, title } = dto;

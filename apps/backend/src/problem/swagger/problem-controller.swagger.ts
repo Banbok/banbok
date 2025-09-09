@@ -11,3 +11,10 @@ export const SubmitProblemSwagger = applyDecorators(
     description: '사용자가 푼 문제를 제출합니다.'
   }),
 )
+
+export const GetProblemsSwagger = applyDecorators(
+  ApiOperation({
+    summary: '문제 목록 조회',
+    description: '사용자가 푼 문제 목록을 조회합니다.'
+  }),
+)

@@ -14,8 +14,13 @@ export class ProblemRepository {
   ) {
   }
 
+
   async findAll() {
     return this.database.select().from(Problem);
+  }
+
+  async findAllByMemberId(memberId: number) {
+    return this.database.select().from(Problem).where(eq(Problem.memberId, memberId));
   }
 
   async findByMemberIdAndUrl(memberId: number, problemUrl: string) {

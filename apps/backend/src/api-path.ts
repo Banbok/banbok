@@ -9,5 +9,6 @@ export const ApiPath = {
   },
   Problem: {
     SUBMIT: '/v1/problems',
+    PROBLEMS: '/v1/problems',
   },
 } as const;
