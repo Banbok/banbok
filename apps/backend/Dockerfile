@@ -44,9 +44,16 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
+# Copy workspace files for dependency installation
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/apps/backend/package*.json ./apps/backend/
+COPY --from=builder /app/packages ./packages
+
 # Install dependencies (including dev for drizzle-kit)
-COPY --from=builder /app/apps/backend/package*.json ./
-RUN npm ci && npm cache clean --force
+RUN npm install && npm cache clean --force
+
+# Move to backend directory
+WORKDIR /app/apps/backend
 
 # Copy necessary files
 COPY --from=builder /app/apps/backend/dist ./dist
