@@ -7,6 +7,7 @@ import { COOKIE_CONFIG } from '../common/constants';
 import { AuthControllerSwagger, NaverLoginSwagger } from './swagger';
 import { ApiPath } from '../api-path';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
+import { getCommonCookieOptions } from '../common/util';
 
 @Controller()
 @AuthControllerSwagger
@@ -31,11 +32,8 @@ export class AuthController {
 
     // HttpOnly 쿠키로 토큰 설정
     res.cookie('accessToken', result.accessToken, {
-      httpOnly: true, // XSS 방지 (JavaScript로 접근 불가)
-      secure: this.configService.get<string>('NODE_ENV') === 'production',
-      sameSite: COOKIE_CONFIG.SAME_SITE, // CSRF 방지
+      ...getCommonCookieOptions(this.configService),
       maxAge: COOKIE_CONFIG.MAX_AGE, // 1일
-      path: '/',
     });
 
     const redirectUrl = `${this.configService.get<string>('FRONTEND_URL')}/`;
@@ -47,9 +45,7 @@ export class AuthController {
   @UseGuards(JwtAuthGuard)
   async logout(@Res() res: Response) {
     res.clearCookie('accessToken', {
-      httpOnly: true,
-      secure: this.configService.get<string>('NODE_ENV') === 'production',
-      sameSite: COOKIE_CONFIG.SAME_SITE,
+      ...getCommonCookieOptions(this.configService),
     });
     res.sendStatus(200);
   }
