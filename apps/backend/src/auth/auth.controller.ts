@@ -1,4 +1,4 @@
-import { Controller, Get, Request, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Request, Res, UseGuards } from '@nestjs/common';
 import { NaverAuthGuard } from './guards/naver-auth.guard';
 import { Response } from 'express';
 import { AuthService } from './auth.service';
@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { COOKIE_CONFIG } from '../common/constants';
 import { AuthControllerSwagger, NaverLoginSwagger } from './swagger';
 import { ApiPath } from '../api-path';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
 @Controller()
 @AuthControllerSwagger
@@ -40,5 +41,16 @@ export class AuthController {
     const redirectUrl = `${this.configService.get<string>('FRONTEND_URL')}/`;
 
     res.redirect(redirectUrl);
+  }
+
+  @Post(ApiPath.Auth.LOGOUT)
+  @UseGuards(JwtAuthGuard)
+  async logout(@Res() res: Response) {
+    res.clearCookie('accessToken', {
+      httpOnly: true,
+      secure: this.configService.get<string>('NODE_ENV') === 'production',
+      sameSite: COOKIE_CONFIG.SAME_SITE,
+    });
+    res.sendStatus(200);
   }
 }
