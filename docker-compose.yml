@@ -15,7 +15,7 @@ services:
     image: ${BACKEND_IMAGE:-banbok-backend:latest}
     container_name: banbok-backend
     ports:
-      - "80:3001"
+      - "3001:3001"
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - PORT=${PORT:-3001}
