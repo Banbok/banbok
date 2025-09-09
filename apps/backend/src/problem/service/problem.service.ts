@@ -14,11 +14,11 @@ export class ProblemService {
   }
 
   async getList(memberId: number) {
-    if (!(await this.memberService.isExistById(memberId))) {
+    if (!(await this.memberService.getById(memberId))) {
       throw new NotFoundException('존재하지 않는 멤버입니다.');
     }
 
-    return await this.problemRepository.findAllByMemberId(memberId);
+    return this.problemRepository.findAllByMemberId(memberId);
   }
 
 

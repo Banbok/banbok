@@ -9,10 +9,6 @@ export class MemberService {
   ) {
   }
 
-  async getAll() {
-    return this.memberRepository.findAll();
-  }
-
   async getById(id: number) {
     const member = await this.memberRepository.findById(id);
     if (!member) {
@@ -27,10 +23,5 @@ export class MemberService {
 
   async create(req: typeof schema.Member.$inferInsert) {
     return await this.memberRepository.insert(req);
-  }
-
-  async isExistById(id: number): Promise<boolean> {
-    const member = await this.memberRepository.findById(id);
-    return !!member;
   }
 }

@@ -8,7 +8,6 @@ export const ApiPath = {
     MY: '/v1/members/me',
   },
   Problem: {
-    SUBMIT: '/v1/problems',
     PROBLEMS: '/v1/problems',
   },
 } as const;
