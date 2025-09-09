@@ -43,6 +43,9 @@ jobs:
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker asia-northeast3-docker.pkg.dev
 
+      - name: Clean up Docker system
+        run: docker system prune -af --volumes
+
       - name: Build and push Docker image
         run: |
           docker build -f apps/backend/Dockerfile -t asia-northeast3-docker.pkg.dev/$PROJECT_ID/banbok/$SERVICE_NAME:$GITHUB_SHA .
@@ -98,6 +101,7 @@ jobs:
             --project=${{ secrets.GCP_PROJECT_ID }} \
             --command="
               cd ~/banbok &&
+              docker system prune -af --volumes &&
               gcloud auth configure-docker asia-northeast3-docker.pkg.dev --quiet &&
               docker compose down &&
               docker compose pull &&

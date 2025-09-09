@@ -44,12 +44,14 @@ WORKDIR /app
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nestjs
 
+# Install dependencies (including dev for drizzle-kit)
+COPY --from=builder /app/apps/backend/package*.json ./
+RUN npm ci && npm cache clean --force
+
 # Copy necessary files
 COPY --from=builder /app/apps/backend/dist ./dist
-COPY --from=builder /app/apps/backend/package*.json ./
 COPY --from=builder /app/apps/backend/drizzle.config.ts ./
 COPY --from=builder /app/apps/backend/src ./src
-COPY --from=deps /app/node_modules ./node_modules
 
 # Change ownership
 RUN chown -R nestjs:nodejs /app
