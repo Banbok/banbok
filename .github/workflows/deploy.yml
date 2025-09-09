@@ -53,6 +53,11 @@ jobs:
           cat > .env.production << EOF
           NODE_ENV=production
           DATABASE_URL=${{ secrets.DATABASE_URL }}
+          DATABASE_HOST=${{ secrets.DATABASE_HOST }}
+          DATABASE_PORT=${{ secrets.DATABASE_PORT }}
+          DATABASE_USER=${{ secrets.DATABASE_USER }}
+          DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }}
+          DATABASE_NAME=${{ secrets.DATABASE_NAME }}
           JWT_SECRET=${{ secrets.JWT_SECRET }}
           CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}
           CORS_METHODS=${{secrets.CORS_METHODS }}
@@ -97,6 +102,21 @@ jobs:
               docker compose down &&
               docker compose pull &&
               docker compose up -d
+            "
+
+      - name: Run Database Migration
+        run: |
+          # Wait for backend container to be ready
+          sleep 30
+          
+          # Run database migration
+          gcloud compute ssh ${{ secrets.VM_NAME }} \
+            --zone=${{ secrets.GCP_ZONE }} \
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --command="
+              cd ~/banbok &&
+              docker compose exec -T backend npm run db:generate &&
+              docker compose exec -T backend npm run db:migrate
             "
 
       - name: Get VM external IP
