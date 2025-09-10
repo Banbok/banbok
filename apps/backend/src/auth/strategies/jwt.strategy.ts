@@ -13,11 +13,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (request: Request) => {
-          const token = request?.cookies?.[COOKIE_CONFIG.ACCESS_TOKEN_COOKIE_KEY];
-          if (!token) {
-            this.logger.warn('쿠키에서 JWT 토큰을 찾을 수 없습니다');
+          const cookieToken = request?.cookies?.[COOKIE_CONFIG.ACCESS_TOKEN_COOKIE_KEY];
+          if (cookieToken) {
+            return cookieToken;
           }
-          return token;
+
+          const authHeader = request?.headers?.authorization;
+          if (authHeader?.startsWith('Bearer ')) {
+            return authHeader.substring(7);
+          }
+
+          this.logger.warn('쿠키와 Authorization 헤더에서 JWT 토큰을 찾을 수 없습니다');
+          return null;
         },
       ]),
       ignoreExpiration: false,

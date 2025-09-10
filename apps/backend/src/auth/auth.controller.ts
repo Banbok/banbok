@@ -36,7 +36,7 @@ export class AuthController {
       maxAge: COOKIE_CONFIG.MAX_AGE, // 1일
     });
 
-    const redirectUrl = `${this.configService.get<string>('FRONTEND_URL')}?accessToken=${result.accessToken}&memberId=${result.user.id}`;
+    const redirectUrl = `${this.configService.get<string>('FRONTEND_URL')}?accessToken=${result.accessToken}`;
 
     res.redirect(redirectUrl);
   }
