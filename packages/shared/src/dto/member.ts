@@ -5,4 +5,5 @@ export interface MyInfoResponseDto {
   readonly provider: string;
   readonly providerId: string;
   readonly profileImage: string | null;
+  readonly createdAt: string;
 }

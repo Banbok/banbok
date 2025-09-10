@@ -10,6 +10,7 @@ export class MyInfoResponse implements IMyInfoResponseDto {
     this.provider = member.provider;
     this.providerId = member.providerId;
     this.profileImage = member.profileImage;
+    this.createdAt = member.createdAt.toISOString();
   }
 
   @ApiProperty({
@@ -48,6 +49,12 @@ export class MyInfoResponse implements IMyInfoResponseDto {
     nullable: true,
   })
   profileImage: string | null;
+
+  @ApiProperty({
+    example: '2023-10-05T14:48:00.000Z',
+    description: '회원 가입 일자',
+  })
+  createdAt: string;
 
   static from(member: typeof Member.$inferSelect): MyInfoResponse {
     return new MyInfoResponse(member);
