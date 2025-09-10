@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { MemberService } from '../member/service';
-import * as schema from '../member/schema/member.schema';
+import { MemberService } from '../../member/service';
+import * as schema from '../../member/schema/member.schema';
 
 export interface OAuthUserInfo {
   provider: string;
