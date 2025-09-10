@@ -17,7 +17,7 @@ export class CorsConfig {
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
       credentials: true,
       optionsSuccessStatus: 204,
-      sameSite: 'strict' as const,
+      sameSite: 'none' as const,
     };
 
     const defaults = isProduction ? productionDefaults : developmentDefaults;

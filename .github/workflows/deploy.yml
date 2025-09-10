@@ -53,6 +53,7 @@ jobs:
 
       - name: Create environment file
         run: |
+          echo "FRONTEND_URL: ${{ secrets.FRONTEND_URL }}"
           cat > .env.production << EOF
           NODE_ENV=production
           DATABASE_HOST=${{ secrets.DATABASE_HOST }}
