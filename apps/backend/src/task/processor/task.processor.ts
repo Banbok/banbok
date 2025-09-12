@@ -54,8 +54,6 @@ export class TaskProcessor extends WorkerHost {
     // 1. 1, 3, 7, 21일 지난 모든 문제들을 멤버 정보와 함께 가져오기
     const problemsWithMembers = await this.problemService.getProblemsForReminderDays(days);
 
-    console.log('Problems with members count:', problemsWithMembers.length);
-
     // 2. 유저별로 그룹화
     problemsWithMembers.forEach(item => {
       if (!reminderMap.has(item.memberId)) {
@@ -87,10 +85,6 @@ export class TaskProcessor extends WorkerHost {
       }
     });
 
-    for (const [memberId, data] of reminderMap) {
-      console.log(`Member ID: ${memberId}, Problems:`, data.problems);
-    }
-
     // 3. 각 유저에게 이메일 발송 (문제가 있을 때만)
     const emailPromises = [];
     for (const [memberId, data] of reminderMap) {
@@ -109,7 +103,6 @@ export class TaskProcessor extends WorkerHost {
         }));
       }
     }
-    console.log('EmailPromises length:', emailPromises.length);
     await Promise.all(emailPromises);
 
     return {

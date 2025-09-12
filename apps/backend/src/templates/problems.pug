@@ -26,7 +26,7 @@ html
                 div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #00acc1;')
                   a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
                     span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
-                    | 문제 ##{problem.title}
+                    | 문제 :#{problem.title}
 
           //- 3일차 복습 문제
           if problemsByDays.day3 && problemsByDays.day3.length > 0
@@ -36,7 +36,7 @@ html
                 div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #ff9800;')
                   a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
                     span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
-                    | 문제 ##{problem.title}
+                    | 문제 :#{problem.title}
 
           //- 7일차 복습 문제
           if problemsByDays.day7 && problemsByDays.day7.length > 0
@@ -46,7 +46,7 @@ html
                 div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #9c27b0;')
                   a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
                     span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
-                    | 문제 ##{problem.title}
+                    | 문제 :#{problem.title}
 
           //- 21일차 복습 문제
           if problemsByDays.day21 && problemsByDays.day21.length > 0
@@ -56,7 +56,7 @@ html
                 div(style='background-color: white; padding: 8px; margin: 4px 0; border-radius: 4px; border-left: 3px solid #e91e63;')
                   a(href=problem.problemUrl style='color: #333; text-decoration: none; font-size: 14px;')
                     span(style='background-color: #f5f5f5; padding: 2px 6px; border-radius: 3px; margin-right: 8px; font-size: 12px;') #{problem.site}
-                    | 문제 ##{problem.title}
+                    | 문제 :#{problem.title}
 
           //- 복습할 문제가 없는 경우
           - var hasProblems = (problemsByDays.day1 && problemsByDays.day1.length > 0) || (problemsByDays.day3 && problemsByDays.day3.length > 0) || (problemsByDays.day7 && problemsByDays.day7.length > 0) || (problemsByDays.day21 && problemsByDays.day21.length > 0)

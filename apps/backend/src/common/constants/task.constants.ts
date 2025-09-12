@@ -3,6 +3,7 @@ export const QUEUE_NAMES = {
 };
 
 export const CRON_EXPRESSIONS = {
+  EVERYDAY_9AM: '0 0 9 * * *',
   DAILY_9AM_WEEKDAYS: '0 0 9 * * 1-5',
   EVERY_15_SECONDS: '*/15 * * * * *',
   EVERY_MINUTE: '*/1 * * * *',

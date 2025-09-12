@@ -11,7 +11,9 @@ export class TaskService {
   ) {
   }
 
-  @Cron(CRON_EXPRESSIONS.DAILY_9AM_WEEKDAYS) // 월-금 오전 9시
+  @Cron(CRON_EXPRESSIONS.EVERYDAY_9AM, {
+    timeZone: 'Asia/Seoul',
+  }) // 매일 오전 9시에 실행
   async scheduleReminderCheck() {
     await this.taskQueue.add(QUEUE_NAMES.DAILY_PROBLEM_REMINDER, {
       scheduledAt: new Date(),
