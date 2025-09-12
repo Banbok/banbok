@@ -9,9 +9,6 @@ on:
       - 'docker-compose.yml'
       - '.github/workflows/deploy.yml'
 
-  pull_request:
-    branches: [ main ]
-
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   SERVICE_NAME: banbok-backend
@@ -112,7 +109,7 @@ jobs:
         run: |
           # Wait for backend container to be ready
           sleep 30
-          
+
           # Push database schema directly (simpler than generate + migrate)
           gcloud compute ssh ${{ secrets.VM_NAME }} \
             --zone=${{ secrets.GCP_ZONE }} \
