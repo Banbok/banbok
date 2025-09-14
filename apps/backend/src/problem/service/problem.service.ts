@@ -75,6 +75,15 @@ export class ProblemService {
     if (!this.isValidUrl(link)) {
       throw new BadRequestException('올바르지 않은 URL 입니다.');
     }
+
+    if (this.isNotSupportedSite(link)) {
+      throw new BadRequestException('지원하지 않는 사이트입니다. (백준, 프로그래머스, 리트코드만 지원)');
+    }
+  }
+
+  private isNotSupportedSite(link: string): boolean {
+    const supportedSites = ['acmicpc.net', 'programmers.co.kr', 'leetcode.com'];
+    return !supportedSites.some(site => link.includes(site));
   }
 
   private extractSite(link: string): Site {
@@ -85,7 +94,7 @@ export class ProblemService {
     ];
 
     const matchedSite = sitePatterns.find(({ pattern }) => link.includes(pattern));
-    return matchedSite?.site ?? Site.ETCS;
+    return matchedSite?.site
   }
 
   private calculateDaysAgo(today: Date, createdAt: Date): number {
