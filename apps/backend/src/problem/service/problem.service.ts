@@ -82,19 +82,23 @@ export class ProblemService {
   }
 
   private isNotSupportedSite(link: string): boolean {
-    const supportedSites = ['acmicpc.net', 'programmers.co.kr', 'leetcode.com'];
-    return !supportedSites.some(site => link.includes(site));
+    return !this.extractSite(link);
   }
 
-  private extractSite(link: string): Site {
+  private extractSite(link: string): Site | null {
     const sitePatterns = [
       { pattern: 'acmicpc.net', site: Site.BAEKJOON },
       { pattern: 'programmers.co.kr', site: Site.PROGRAMMERS },
       { pattern: 'leetcode.com', site: Site.LEETCODE },
     ];
 
-    const matchedSite = sitePatterns.find(({ pattern }) => link.includes(pattern));
-    return matchedSite?.site
+    const matchedSite = sitePatterns.find(({ pattern }) => link.includes(pattern))
+
+    if (!matchedSite) {
+      throw new BadRequestException('지원하지 않는 사이트입니다. (백준, 프로그래머스, 리트코드만 지원)');
+    }
+
+    return matchedSite.site
   }
 
   private calculateDaysAgo(today: Date, createdAt: Date): number {
