@@ -1,10 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import {
-  GoogleLogin,
-  NaverLogin,
-} from "../../_components/Button/OauthLoginButton";
+import { NaverLogin } from "../../_components/Button/OauthLoginButton";
 
 export default function Login() {
   const router = useRouter();
@@ -28,9 +25,6 @@ export default function Login() {
         <div className="space-y-4">
           <div className="flex items-center justify-center">
             <NaverLogin />
-          </div>
-          <div className="flex items-center justify-center">
-            <GoogleLogin />
           </div>
         </div>
       </div>
